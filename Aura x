@@ -1,0 +1,85 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/KJ7285/-back-ups-for-libs/0c9ed5c842e4801f30415606bae445e6b7e8e664/cat"))()
+local Window = Library:CreateWindow("aura x remake v1", Vector2.new(300, 300), Enum.KeyCode.RightControl)
+local LockSection = Window:CreateTab("Lock")
+
+local aimbotSection = LockSection:CreateSector("Lock", "left")
+local camlockSection = LockSection:CreateSector("Camlock", "right")
+
+aimbotSection:AddButton("aura cc", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/KJ7285/aura-cc/main/aura%20cc", true))()
+end)
+
+local aimbotStrengthTextbox = camlockSection:AddTextbox("Camlock Smoothness", "0.07", function(NewValue)
+    getgenv().AimbotStrengthAmount = tonumber(NewValue) or 0.07
+end)
+
+local predictionAmountTextbox = camlockSection:AddTextbox("Predict", "10", function(NewValue)
+    getgenv().PredictionAmount = tonumber(NewValue) or 10
+end)
+
+local radiusTextbox = aimbotSection:AddTextbox("Radius", "50", function(NewValue)
+    getgenv().Radius = tonumber(NewValue) or 50
+end)
+
+local keybindTextbox = aimbotSection:AddTextbox("Keybind", "v", function(NewValue)
+    getgenv().Keybind = NewValue
+end)
+
+local toggleSection = aimbotSection:AddToggle("Enable", false, function(isEnabled)
+    getgenv().Enabled = isEnabled
+end)
+
+local gui = Instance.new("ScreenGui")
+gui.ResetOnSpawn = false
+gui.Parent = game.Players.LocalPlayer.PlayerGui
+
+local button = Instance.new("ImageButton")
+button.Size = UDim2.new(0, 39, 0, 39) -- idk bro
+button.Position = UDim2.new(0, 45, 0, 43)
+button.BackgroundTransparency = 1
+button.Image = "rbxassetid://17497179000" -- aura x icon
+button.Parent = gui
+
+button.MouseButton1Click:Connect(function()
+    local vim = game:GetService("VirtualInputManager")
+    vim:SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
+end)
+
+button.Active = true
+button.Draggable = true
+
+getgenv().RecurringPoint = "UpperTorso"
+getgenv().Hitbox = "UpperTorso"
+getgenv().UsePrediction = true
+getgenv().AimbotStrength = true
+getgenv().FirstPerson = true
+getgenv().ThirdPerson = true
+getgenv().TeamCheck = false
+
+-- // main script use with silent aim / / -- 
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tenaaki/GenericAimbot/main/v1.0.0"))()
+
+getgenv().keytoclick = "V"
+local customName = "aura x remake v1"
+
+local tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = customName
+tool.Activated:Connect(function()
+    local vim = game:service("VirtualInputManager")
+    vim:SendKeyEvent(true, getgenv().keytoclick, false, game)
+end)
+tool.Parent = game.Players.LocalPlayer.Backpack
+
+local player = game.Players.LocalPlayer
+
+local function connectCharacterAdded()
+    player.CharacterAdded:Connect(onCharacterAdded)
+end
+
+connectCharacterAdded()
+
+player.CharacterRemoving:Connect(function()
+    tool.Parent = game.Players.LocalPlayer.Backpack
+end)
